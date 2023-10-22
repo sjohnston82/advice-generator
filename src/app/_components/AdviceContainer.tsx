@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 const axios = require("axios").default;
 import dynamic from "next/dynamic";
+import AdviceNumber from "./AdviceNumber";
+import Advice from "./Advice";
 const NoSSRLoadingSpinner = dynamic(() => import("./LoadingSpinner"), {
   ssr: false,
 });
@@ -18,7 +20,7 @@ const AdviceContainer = () => {
 
   const getNewAdvice = () => {
     axios
-      .get("https://api.adviceslip.com/advice")
+      .get("	https://api.adviceslip.com/advice/117")
       .then(function (response: any) {
         const { id, advice } = response.data.slip;
         setIsLoading(true);
@@ -41,7 +43,12 @@ const AdviceContainer = () => {
 
   return (
     <div className="w-[342px] h-[316px] bg-dark-grayish-blue rounded-xl mt-[120px] px-4">
-     {currentAdvice?.id && <p className="text-neon-green mx-auto text-[11px] font-[600] tracking-[0.35em] mt-10 text-center">{`ADVICE #${currentAdvice?.id}`}</p>}
+      {currentAdvice && (
+        <div className="">
+          <AdviceNumber id={currentAdvice.id} />
+          <Advice advice={currentAdvice.advice} />
+        </div>
+      )}
     </div>
   );
 };
