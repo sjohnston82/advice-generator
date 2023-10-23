@@ -5,6 +5,9 @@ const axios = require("axios").default;
 import dynamic from "next/dynamic";
 import AdviceNumber from "./AdviceNumber";
 import Advice from "./Advice";
+import PatternDividerMobile from "../../../public/images/pattern-divider-mobile.svg";
+import Image from "next/image";
+import Reroll from "./Reroll";
 const NoSSRLoadingSpinner = dynamic(() => import("./LoadingSpinner"), {
   ssr: false,
 });
@@ -20,7 +23,7 @@ const AdviceContainer = () => {
 
   const getNewAdvice = () => {
     axios
-      .get("	https://api.adviceslip.com/advice/117")
+      .get("https://api.adviceslip.com/advice", { cache: "no-cache" })
       .then(function (response: any) {
         const { id, advice } = response.data.slip;
         setIsLoading(true);
@@ -42,11 +45,13 @@ const AdviceContainer = () => {
   }, []);
 
   return (
-    <div className="w-[342px] h-[316px] bg-dark-grayish-blue rounded-xl mt-[120px] px-4">
+    <div className="w-[343px] ml-[1px] h-[315px] bg-dark-grayish-blue rounded-[10px] mt-[120px] px-6 relative">
       {currentAdvice && (
         <div className="">
           <AdviceNumber id={currentAdvice.id} />
           <Advice advice={currentAdvice.advice} />
+          <Image src={PatternDividerMobile} alt="Pattern divider" />
+          <Reroll getNewAdvice={getNewAdvice} />
         </div>
       )}
     </div>
